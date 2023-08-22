@@ -1,10 +1,10 @@
 import { ContributionGraph } from "react-native-chart-kit";
 
-import { Text, Dimensions, StyleSheet } from "react-native";
+import { Text, Dimensions, StyleSheet, View } from "react-native";
 
 const CalendarGraph = () => {
   return (
-    <>
+    <View style={{ marginBottom: 20 }}>
       <Text style={styles.header}>Contribution Graph</Text>
       <ContributionGraph
         values={[
@@ -37,7 +37,7 @@ const CalendarGraph = () => {
           },
         }}
       />
-    </>
+    </View>
   );
 };
 

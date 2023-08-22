@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet, Button, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   Ionicons,
@@ -12,6 +13,8 @@ import { PaperProvider } from "react-native-paper";
 import HomeScreen from "./screens/HomeScreen";
 import DetailsScreen from "./screens/DetailsScreen";
 import MotivationScreen from "./screens/MotivationScreen";
+import { useEffect, useState } from "react";
+import { requestPermissionsAsync } from "./notifications";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -22,17 +25,30 @@ const DefaultTheme = {
   },
 };
 
-/* function DetailsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
-  );
-} */
-
 export default function App() {
+  const [drankHistory, setDrankHistory] = useState([]);
+  const DRANK_HISTORY = "DRANK_HISTORY";
+
+  useEffect(() => {
+    requestPermissionsAsync();
+    (async function () {
+      let value = await AsyncStorage.getItem(DRANK_HISTORY);
+      value = value ? value.split(",") : "";
+      setDrankHistory(value);
+    })();
+  }, []);
+
+  const pushContainer = (name) => {
+    setDrankHistory((prev) => [...prev, name]);
+  };
+
+  useEffect(() => {
+    (async function () {
+      console.log("drank", drankHistory?.toString());
+      await AsyncStorage.setItem(DRANK_HISTORY, drankHistory?.toString());
+    })();
+  }, [drankHistory]);
+
   return (
     <PaperProvider theme={DefaultTheme}>
       <NavigationContainer>
@@ -45,7 +61,7 @@ export default function App() {
         >
           <Tab.Screen
             name="Home"
-            component={HomeScreen}
+            children={() => <HomeScreen pushToHistory={pushContainer} />}
             options={{
               tabBarLabel: "Home",
               tabBarIcon: ({ color }) => (
@@ -55,7 +71,7 @@ export default function App() {
           />
           <Tab.Screen
             name="History"
-            component={DetailsScreen}
+            children={() => <DetailsScreen history={drankHistory} />}
             options={{
               tabBarLabel: "History",
               tabBarIcon: ({ color }) => (

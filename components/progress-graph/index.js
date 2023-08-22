@@ -1,9 +1,19 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { ProgressChart } from "react-native-chart-kit";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 
-const MyProgressChart = () => {
-  Dimensions;
+const MyProgressChart = ({ progress }) => {
+  const [data, setData] = useState([0]);
+
+  useEffect(() => {
+    if (progress > 0) {
+      const newData = [];
+      newData.push(progress);
+      setData(newData);
+    }
+  }, [progress]);
+
   return (
     <>
       <View style={styles.goalContainer}>
@@ -12,7 +22,7 @@ const MyProgressChart = () => {
       </View>
       <Text style={styles.header}>Today's Progress</Text>
       <ProgressChart
-        data={[0.2]}
+        data={data}
         width={Dimensions.get("window").width}
         height={220}
         chartConfig={{
