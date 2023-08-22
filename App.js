@@ -1,22 +1,28 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Button, Text, View } from 'react-native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet, Button, Text, View } from "react-native";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { PaperProvider } from 'react-native-paper';
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { PaperProvider } from "react-native-paper";
 
-import HomeScreen  from './screens/HomeScreen';
+import HomeScreen from "./screens/HomeScreen";
+import DetailsScreen from "./screens/DetailsScreen";
+import MotivationScreen from "./screens/MotivationScreen";
 
 const Tab = createMaterialBottomTabNavigator();
 
 const DefaultTheme = {
-  "colors": {
-    "onSecondaryContainer": "transparent",
-    "notification": "red"
-  }
-} 
+  colors: {
+    onSecondaryContainer: "transparent",
+    notification: "red",
+  },
+};
 
-function DetailsScreen({ navigation }) {
+/* function DetailsScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Details Screen</Text>
@@ -24,34 +30,60 @@ function DetailsScreen({ navigation }) {
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
-}
+} */
 
 export default function App() {
-
   return (
     <PaperProvider theme={DefaultTheme}>
       <NavigationContainer>
-        <Tab.Navigator 
+        <Tab.Navigator
           initialRouteName="Home"
           activeColor="white"
           inactiveColor="white"
           shifting={true}
-          barStyle={{ backgroundColor: '#3083dc' }}
-          >
-          <Tab.Screen name="Home" component={HomeScreen} 
+          barStyle={{ backgroundColor: "#3083dc" }}
+        >
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
             options={{
-              tabBarLabel: 'Home',
+              tabBarLabel: "Home",
               tabBarIcon: ({ color }) => (
                 <Ionicons name="water" color={color} size={26} />
               ),
-            }}/>
-          <Tab.Screen name="History" component={DetailsScreen} 
+            }}
+          />
+          <Tab.Screen
+            name="History"
+            component={DetailsScreen}
             options={{
-              tabBarLabel: 'History',
+              tabBarLabel: "History",
               tabBarIcon: ({ color }) => (
-                <MaterialIcons name="history" color={color} borderRadius={0} size={26} />
-              )
-            }}/>
+                <MaterialIcons
+                  name="history"
+                  color={color}
+                  borderRadius={0}
+                  size={26}
+                />
+              ),
+            }}
+          />
+
+          <Tab.Screen
+            name="Motivation"
+            component={MotivationScreen}
+            options={{
+              tabBarLabel: "Motivation",
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons
+                  name="weight-lifter"
+                  size={26}
+                  color={color}
+                  borderRadius={0}
+                />
+              ),
+            }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </PaperProvider>
@@ -61,8 +93,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

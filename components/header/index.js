@@ -6,5 +6,10 @@ export default function Header({ title }) {
 }
 
 const styles = StyleSheet.create({
-  header: { textAlign: "center", fontSize: 24, fontWeight: "bold" },
+  header: {
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
 });
